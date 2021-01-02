@@ -17,10 +17,15 @@ public class Enemy : MonoBehaviour
     public float attackRate = 10f;
     float nextAttackTime;
 
+    int triggerCounter;
+    public int numberOfPlayerColliders;
+
     void Start()
     {
         currentHealth = maxHealth;
         nextAttackTime = Time.time + Random.Range(10f / attackRate, 40f / attackRate);
+        triggerCounter = 0;
+        numberOfPlayerColliders = 2;
     }
 
     void Update()
@@ -73,7 +78,16 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        animator.SetTrigger("NoticePlayer");
+        triggerCounter++;
+        if (triggerCounter % numberOfPlayerColliders == 0)
+        {
+            animator.SetTrigger("NoticePlayer");
+
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+
     }
 
     void OnDrawGizmosSelected()
