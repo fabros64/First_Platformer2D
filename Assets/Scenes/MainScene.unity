@@ -1007,6 +1007,7 @@ MonoBehaviour:
   attackRange: 0.15
   attackDamage: 40
   attackRate: 2
+  maxHealth: 100
 --- !u!1001 &939125385
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1448,6 +1449,7 @@ GameObject:
   - component: {fileID: 1651788558}
   - component: {fileID: 1651788562}
   - component: {fileID: 1651788563}
+  - component: {fileID: 1651788564}
   m_Layer: 10
   m_Name: Skeleton
   m_TagString: Untagged
@@ -1468,8 +1470,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.025890827, y: -0.114846945}
-  m_Size: {x: 0.4277401, y: 0.7703061}
+  m_Offset: {x: 0.025890827, y: -0.100762844}
+  m_Size: {x: 0.46999264, y: 0.7421379}
   m_Direction: 0
 --- !u!95 &1651788559
 Animator:
@@ -1551,7 +1553,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.268, y: -1.533, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1775787736}
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1589,7 +1592,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1651788559}
+  attackPoint: {fileID: 1775787736}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 256
   maxHealth: 100
+  attackDamage: 10
+  attackRange: 0.27
+  attackRate: 8
+--- !u!58 &1651788564
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651788557}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.93}
+  serializedVersion: 2
+  m_Radius: 2.5
+--- !u!1 &1775787735
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1775787736}
+  m_Layer: 0
+  m_Name: enemyAttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1775787736
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775787735}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.443, y: -0.099, z: -50.67574}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1651788561}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2109105748
 GameObject:
   m_ObjectHideFlags: 0
