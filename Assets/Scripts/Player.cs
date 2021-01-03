@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     const float GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     private bool Grounded;
 
+    [Header("Events")]
     [Space]
     public UnityEvent OnLandEvent;
 
@@ -46,6 +47,9 @@ public class Player : MonoBehaviour
     {
         Rigidbody = GetComponent<Rigidbody2D>();
         ActualRotation = Quaternion.Euler(Vector3.up);
+
+        if (OnLandEvent == null)
+            OnLandEvent = new UnityEvent();
     }
 
     void Start()
