@@ -4,27 +4,33 @@ using UnityEngine;
 
 public class Detector : MonoBehaviour
 {
-    public Enemy enemy;
-    public Transform player;
+    public Enemy enemy;   
+    public Transform attackPoint;
 
     int triggerCounter;
     public int numberOfPlayerColliders;
 
     bool following;
-    int flipDirection;
+    
+
+    public float WalkingSpeed = 1f;
+    Vector3 WalkingDirection;
+
+    Rigidbody2D enemyRigidBody;
+
+    float attackDistance;
 
     void Start()
     {
         triggerCounter = 0;
         numberOfPlayerColliders = 2;
-        following = false;
-        flipDirection = 0;
+        following = false;        
     }
 
     private void FixedUpdate()
     {
         if (following)
-            FollowPlayer();
+            enemy.FollowPlayer();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -32,34 +38,37 @@ public class Detector : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             triggerCounter++;
-        }
 
-        if (triggerCounter % numberOfPlayerColliders == 0 && triggerCounter > 0)
-        {
-            enemy.animator.SetTrigger("NoticePlayer");
-            enemy.animator.SetBool("FollowingPlayer", true);
-            following = true;
+            if (triggerCounter % numberOfPlayerColliders == 0 && triggerCounter > 0)
+            {
+                enemy.animator.SetTrigger("NoticePlayer");               
+                StartCoroutine(FollowWithDelay());               
+            }
         }
     }
+
+    IEnumerator FollowWithDelay()
+    {
+        yield return new WaitForSeconds(1f);
+        enemy.animator.SetBool("FollowingPlayer", true);
+        following = true;
+    }
+
+    IEnumerator StopFollowWithDelay()
+    {
+        yield return new WaitForSeconds(1f);
+        enemy.animator.SetBool("FollowingPlayer", false);
+        following = false;
+    }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
-        enemy.animator.SetBool("FollowingPlayer", false);
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            triggerCounter--;            
+            StartCoroutine(StopFollowWithDelay());
+        }
     }
 
-    void SetProperDirection()
-    {
-        if ((enemy.transform.position.x - player.position.x) > 0)
-            flipDirection = 0;
-        else 
-            flipDirection = 180;
-
-        enemy.transform.rotation = Quaternion.Euler(Vector3.up * flipDirection);
-    }
-
-    void FollowPlayer()
-    {
-        SetProperDirection();
-
-
-    }
+    
 }
