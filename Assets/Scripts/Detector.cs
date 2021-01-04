@@ -6,19 +6,12 @@ public class Detector : MonoBehaviour
 {
     public Enemy enemy;   
     public Transform attackPoint;
+    public GameObject alert;
 
     int triggerCounter;
     public int numberOfPlayerColliders;
 
-    bool following;
-    
-
-    public float WalkingSpeed = 1f;
-    Vector3 WalkingDirection;
-
-    Rigidbody2D enemyRigidBody;
-
-    float attackDistance;
+    bool following;    
 
     void Start()
     {
@@ -41,7 +34,8 @@ public class Detector : MonoBehaviour
 
             if (triggerCounter % numberOfPlayerColliders == 0 && triggerCounter > 0)
             {
-                enemy.animator.SetTrigger("NoticePlayer");               
+                enemy.animator.SetTrigger("NoticePlayer");
+                alert.GetComponent<SpriteRenderer>().enabled = true;
                 StartCoroutine(FollowWithDelay());               
             }
         }
@@ -50,6 +44,7 @@ public class Detector : MonoBehaviour
     IEnumerator FollowWithDelay()
     {
         yield return new WaitForSeconds(1f);
+        alert.GetComponent<SpriteRenderer>().enabled = false;
         enemy.animator.SetBool("FollowingPlayer", true);
         following = true;
     }
@@ -68,7 +63,5 @@ public class Detector : MonoBehaviour
             triggerCounter--;            
             StartCoroutine(StopFollowWithDelay());
         }
-    }
-
-    
+    } 
 }

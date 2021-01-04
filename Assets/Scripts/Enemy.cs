@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     public Animator animator;
     public Transform attackPoint;
     public LayerMask playerLayer;
+    public LayerMask obstacleLayers;
     public Transform player;
 
     public int maxHealth = 100;
@@ -18,6 +19,9 @@ public class Enemy : MonoBehaviour
     public float attackRate = 10f;
     float nextAttackTime;
 
+    public float jumpForce = 100f;
+    float jumpDirection;
+    bool isCoroutineJumpExecuting = false;
 
     Rigidbody2D enemyRigidBody;
 
@@ -27,23 +31,41 @@ public class Enemy : MonoBehaviour
     int flipDirection;
     Vector3 WalkingDirection;
 
+
     void Start()
     {
         currentHealth = maxHealth;
         nextAttackTime = Time.time + Random.Range(10f / attackRate, 25f / attackRate);
         enemyRigidBody = GetComponent<Rigidbody2D>();
         attackDistance = Vector2.Distance(transform.position, attackPoint.transform.position)
-            + attackRange / 1.5f;
+            + attackRange;
         flipDirection = 0;
+        jumpDirection = -1;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if(Time.time >= nextAttackTime)
+        if (Time.time >= nextAttackTime)
         {
             StartCoroutine(Attack());
+            jumpDirection = flipDirection == 0 ? (-1) : 1;
+            StartCoroutine(Jump(1));
             nextAttackTime = Time.time + Random.Range(10f / attackRate, 25f / attackRate);
         }
+    }
+
+    IEnumerator Jump(float time)
+    {
+        Collider2D[] hitObstacles = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, obstacleLayers);
+        if(hitObstacles.Length > 0)
+        {
+            if (isCoroutineJumpExecuting)
+                yield break;
+            isCoroutineJumpExecuting = true;
+            yield return new WaitForSeconds(time);
+            enemyRigidBody.AddForce(new Vector2(jumpForce/4f * jumpDirection, jumpForce), ForceMode2D.Impulse);
+            isCoroutineJumpExecuting = false;
+        }          
     }
 
     IEnumerator Attack()
@@ -59,6 +81,7 @@ public class Enemy : MonoBehaviour
                 foreach (Collider2D player in hitEnemies)
                 {
                     player.GetComponent<PlayerCombat>().TakeDamage(attackDamage);
+                    player.GetComponent<Rigidbody2D>().AddForce(new Vector2(jumpDirection * 30, 5), ForceMode2D.Impulse);
                     break;
                 }
             }
@@ -97,6 +120,9 @@ public class Enemy : MonoBehaviour
         {
             WalkingDirection = new Vector3(0, enemyRigidBody.velocity.y);
             animator.SetBool("FollowingPlayer", false);
+            if ((transform.position.x - player.position.x) > 0)
+                flipDirection = 0;
+            else flipDirection = 180;
         }
         else
         {
@@ -113,7 +139,12 @@ public class Enemy : MonoBehaviour
     public void FollowPlayer()
     {
         SetProperDirection();
-        enemyRigidBody.velocity = new Vector3(WalkingDirection.x, enemyRigidBody.velocity.y);
+            enemyRigidBody.velocity = new Vector3(enemyRigidBody.velocity.x/15 + WalkingDirection.x, enemyRigidBody.velocity.y);
+    }
+
+    public void FreeMovement()
+    {
+        // powolne losowe poruszanie się 
     }
 
     void OnDrawGizmosSelected()

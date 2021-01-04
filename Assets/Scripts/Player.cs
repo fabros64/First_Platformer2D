@@ -30,11 +30,13 @@ public class Player : MonoBehaviour
     [Space]
     public UnityEvent OnLandEvent;
 
-
     Rigidbody2D Rigidbody;
+
     Vector3 WalkingDirection;
-    int RotationValue = 0;
+    public int RotationValue { get; private set; } = 0;
+
     Quaternion ActualRotation;
+
     private Vector3 Velocity = Vector3.zero;
 
     private float jumpTimeCounter;
