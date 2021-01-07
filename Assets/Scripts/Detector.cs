@@ -24,6 +24,7 @@ public class Detector : MonoBehaviour
     {
         if (following)
             enemy.FollowPlayer();
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -36,21 +37,23 @@ public class Detector : MonoBehaviour
             {
                 enemy.animator.SetTrigger("NoticePlayer");
                 alert.GetComponent<SpriteRenderer>().enabled = true;
-                StartCoroutine(FollowWithDelay());               
+                StartCoroutine(FollowWithDelay(collision.GetComponent<PlayerCombat>()));               
             }
         }
     }
 
-    IEnumerator FollowWithDelay()
+    IEnumerator FollowWithDelay(PlayerCombat pc)
     {
         yield return new WaitForSeconds(1f);
         alert.GetComponent<SpriteRenderer>().enabled = false;
         enemy.animator.SetBool("FollowingPlayer", true);
         following = true;
+        pc.IsBeignFollowed = true;
     }
 
-    IEnumerator StopFollowWithDelay()
+    IEnumerator StopFollowWithDelay(PlayerCombat pc)
     {
+        pc.IsBeignFollowed = false;
         yield return new WaitForSeconds(1f);
         enemy.animator.SetBool("FollowingPlayer", false);
         following = false;
@@ -60,8 +63,8 @@ public class Detector : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            triggerCounter--;            
-            StartCoroutine(StopFollowWithDelay());
+            triggerCounter--;
+            StartCoroutine(StopFollowWithDelay(collision.GetComponent<PlayerCombat>()));
         }
     } 
 }

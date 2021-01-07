@@ -31,6 +31,7 @@ public class Enemy : MonoBehaviour
     int flipDirection;
     Vector3 WalkingDirection;
 
+    bool isCoroutineRecoilExecuting = false;
 
     void Start()
     {
@@ -41,6 +42,7 @@ public class Enemy : MonoBehaviour
             + attackRange;
         flipDirection = 0;
         jumpDirection = -1;
+        WalkingDirection = new Vector3(0, enemyRigidBody.velocity.y);
     }
 
     void FixedUpdate()
@@ -81,11 +83,22 @@ public class Enemy : MonoBehaviour
                 foreach (Collider2D player in hitEnemies)
                 {
                     player.GetComponent<PlayerCombat>().TakeDamage(attackDamage);
-                    player.GetComponent<Rigidbody2D>().AddForce(new Vector2(jumpDirection * 30, 5), ForceMode2D.Impulse);
+                    StartCoroutine(RecoilWithDelay(0.2f));
                     break;
                 }
             }
         }        
+    }
+
+    IEnumerator RecoilWithDelay(float time)
+    {
+        if (isCoroutineRecoilExecuting)
+            yield break;
+
+        isCoroutineRecoilExecuting = true;
+        yield return new WaitForSeconds(time);
+        player.GetComponent<Rigidbody2D>().AddForce(new Vector2(jumpDirection * 30, 5), ForceMode2D.Impulse);
+        isCoroutineRecoilExecuting = false;
     }
 
     public void TakeDamage(int damage)

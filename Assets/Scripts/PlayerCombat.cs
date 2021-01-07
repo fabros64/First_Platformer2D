@@ -27,32 +27,45 @@ public class PlayerCombat : MonoBehaviour
 
     Rigidbody2D currentEnemy;
 
+    UnityEngine.Vector2 recoilForce;
+
+    public bool IsBeignFollowed { get; set; } = false;
+
     private void Start()
     {
         currentHealth = maxHealth;
         attacking = false;
         recoilDirection = player.RotationValue == 0 ? 1 : (-1);
+        recoilForce = new UnityEngine.Vector2(attackForce * recoilDirection * 10, attackForce / 2);
     }
 
     void Update()
     {
+        if (IsBeignFollowed)
+            attackForce = 100;
+        else if (!IsBeignFollowed)
+            attackForce = 3;
+
         recoilDirection = player.RotationValue == 0 ? 1 : (-1);
+
         if (Time.time >= nextAttackTime)
         {
+            animator.SetBool("IsAttacking", false);
             if (Input.GetKeyDown(KeyCode.I))
             {
                 Attack1();
                 nextAttackTime = Time.time + 1f / attackRate;
-            }
+            }          
         }       
     }
 
     private void FixedUpdate()
     {
-        if(attacking)
-        {
-            StartCoroutine(RecoilWithDelay(0.2f));
-        }
+        recoilForce = new UnityEngine.Vector2(attackForce * recoilDirection * 10, attackForce / 2);
+        if (attacking)
+            {
+                StartCoroutine(RecoilWithDelay(0.2f));
+            }
     }
 
     IEnumerator RecoilWithDelay(float time)
@@ -62,7 +75,7 @@ public class PlayerCombat : MonoBehaviour
 
         isCoroutineRecoilExecuting = true;
         yield return new WaitForSeconds(time);
-        currentEnemy?.AddForce(new UnityEngine.Vector2(attackForce * recoilDirection * 10, attackForce / 2), ForceMode2D.Impulse);
+        currentEnemy?.AddForce(recoilForce, ForceMode2D.Impulse);
         attacking = false;
         isCoroutineRecoilExecuting = false;
     }
@@ -70,10 +83,11 @@ public class PlayerCombat : MonoBehaviour
     void Attack1()
     {
         animator.SetTrigger("Attack1");
+        animator.SetBool("IsAttacking", true);
 
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
-        foreach(Collider2D enemy in hitEnemies)
+        foreach (Collider2D enemy in hitEnemies)
         {
             enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
             currentEnemy = enemy.GetComponent<Rigidbody2D>();
