@@ -619,6 +619,10 @@ PrefabInstance:
       propertyPath: WalkingSpeed
       value: 25
       objectReference: {fileID: 0}
+    - target: {fileID: 7060337480100757902, guid: ba446c055783439468043c57282df246, type: 3}
+      propertyPath: maxHealth
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 7060337480100757903, guid: ba446c055783439468043c57282df246, type: 3}
       propertyPath: m_CollisionDetection
       value: 1
@@ -6465,6 +6469,10 @@ PrefabInstance:
     - target: {fileID: 7060337480100757902, guid: ba446c055783439468043c57282df246, type: 3}
       propertyPath: WalkingSpeed
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7060337480100757902, guid: ba446c055783439468043c57282df246, type: 3}
+      propertyPath: maxHealth
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7060337480100757903, guid: ba446c055783439468043c57282df246, type: 3}
       propertyPath: m_CollisionDetection

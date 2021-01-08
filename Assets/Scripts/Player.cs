@@ -21,9 +21,11 @@ public class Player : MonoBehaviour
     [SerializeField] 
     private LayerMask WhatIsGround;							
 
-    [Range(0, .3f)] [SerializeField] private float MovementSmoothing = .05f;	// How much to smooth out the movement
+    [Range(0, .3f)] 
+    [SerializeField] 
+    private float MovementSmoothing = .05f;
 
-    const float GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
+    const float GroundedRadius = .2f;
     private bool Grounded;
 
     [Header("Events")]
@@ -69,8 +71,6 @@ public class Player : MonoBehaviour
         bool wasGrounded = Grounded;
         Grounded = false;
 
-        // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
-        // This can be done using layers instead but Sample Assets will not overwrite your project settings.
         Collider2D[] colliders = Physics2D.OverlapCircleAll(GroundCheck.position, GroundedRadius, WhatIsGround);
         for (int i = 0; i < colliders.Length; i++)
         {
@@ -143,20 +143,14 @@ public class Player : MonoBehaviour
 
     void UpdateMovement()
     {
-        // Move the character by finding the target velocity
         Vector3 targetVelocity = new Vector2(WalkingDirection.x, Rigidbody.velocity.y);
-        // And then smoothing it out and applying it to the character
         Rigidbody.velocity = Vector3.SmoothDamp(Rigidbody.velocity, targetVelocity, ref Velocity, MovementSmoothing);
-        //Rigidbody.velocity = targetVelocity;
         transform.rotation = ActualRotation;
 
         if (jump && Grounded)
         {
-            // Add a vertical force to the player.
-            //Grounded = false;
             isJumping = true;
             jumpTimeCounter = jumpTime;
-            //Rigidbody.AddForce(new Vector2(0f, JumpForce));
         }
 
         if(isJumping)

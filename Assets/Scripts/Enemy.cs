@@ -33,6 +33,8 @@ public class Enemy : MonoBehaviour
 
     bool isCoroutineRecoilExecuting = false;
 
+    bool isDead = false;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -82,7 +84,7 @@ public class Enemy : MonoBehaviour
             {
                 foreach (Collider2D player in hitEnemies)
                 {
-                    player.GetComponent<PlayerCombat>().TakeDamage(attackDamage);
+                    player.GetComponent<PlayerCombat>().TakeDamage(attackDamage, ref isDead);
                     StartCoroutine(RecoilWithDelay(0.2f));
                     break;
                 }
@@ -97,28 +99,30 @@ public class Enemy : MonoBehaviour
 
         isCoroutineRecoilExecuting = true;
         yield return new WaitForSeconds(time);
-        player.GetComponent<Rigidbody2D>().AddForce(new Vector2(jumpDirection * 30, 5), ForceMode2D.Impulse);
+        player.GetComponent<Rigidbody2D>().AddForce(new Vector2(jumpDirection * (isDead?0.5f:30), 5), ForceMode2D.Impulse);
         isCoroutineRecoilExecuting = false;
     }
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
-
-        animator.SetTrigger("Hurt");
+        if (currentHealth > 0)
+        {
+            currentHealth -= damage;
+            animator.SetTrigger("Hurt");
+        }
 
         if(currentHealth <= 0)
         {
-            Die();
+            StartCoroutine(Die());
         }
     }
 
-    void Die()
+    IEnumerator Die()
     {
-        animator.SetBool("IsDead", true);
-
+        animator.SetBool("IsDead", true);        
+        this.enabled = false;
+        yield return new WaitForSeconds(0.3f);
         GetComponent<Rigidbody2D>().simulated = false;
-        this.enabled = false;        
     }
 
     void SetProperDirection()

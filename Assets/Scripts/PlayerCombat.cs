@@ -15,6 +15,7 @@ public class PlayerCombat : MonoBehaviour
     public int attackDamage = 40;
 
     public int attackForce = 10;
+    int basicAttackForce;
     bool attacking;
     int recoilDirection;
     private bool isCoroutineRecoilExecuting = false;
@@ -37,12 +38,13 @@ public class PlayerCombat : MonoBehaviour
         attacking = false;
         recoilDirection = player.RotationValue == 0 ? 1 : (-1);
         recoilForce = new UnityEngine.Vector2(attackForce * recoilDirection * 10, attackForce / 2);
+        basicAttackForce = attackForce;
     }
 
     void Update()
     {
         if (IsBeignFollowed)
-            attackForce = 100;
+            attackForce = basicAttackForce;
         else if (!IsBeignFollowed)
             attackForce = 3;
 
@@ -61,7 +63,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void FixedUpdate()
     {
-        recoilForce = new UnityEngine.Vector2(attackForce * recoilDirection * 10, attackForce / 2);
+        recoilForce = new UnityEngine.Vector2(attackForce * recoilDirection * 10, attackForce / 3);
         if (attacking)
             {
                 StartCoroutine(RecoilWithDelay(0.2f));
@@ -96,25 +98,28 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, ref bool isDead)
     {
-        currentHealth -= damage;
-
-        animator.SetTrigger("Hurt");
-
-        if (currentHealth <= 0)
+        if (currentHealth > 0)
         {
-            Die();
-            
+            currentHealth -= damage;
+            animator.SetTrigger("Hurt");
+        }
+
+        if (currentHealth <= 0 && !isDead)
+        {
+            isDead = true;
+            StartCoroutine(Die());           
         }
     }
 
-    void Die()
+    IEnumerator Die()
     {
         animator.SetTrigger("Dead");
-        GetComponent<Rigidbody2D>().simulated = false;
         GetComponent<Player>().enabled = false;
         this.enabled = false;
+        yield return new WaitForSeconds(1f);
+        GetComponent<Rigidbody2D>().simulated = false;
     }
 
     void OnDrawGizmosSelected()
