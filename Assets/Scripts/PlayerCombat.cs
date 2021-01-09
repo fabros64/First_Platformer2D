@@ -43,11 +43,6 @@ public class PlayerCombat : MonoBehaviour
 
     void Update()
     {
-        if (IsBeignFollowed)
-            attackForce = basicAttackForce;
-        else if (!IsBeignFollowed)
-            attackForce = 3;
-
         recoilDirection = player.RotationValue == 0 ? 1 : (-1);
 
         if (Time.time >= nextAttackTime)
@@ -63,6 +58,11 @@ public class PlayerCombat : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (IsBeignFollowed)
+            attackForce = basicAttackForce;
+        else if (!IsBeignFollowed)
+            attackForce = 3;
+
         recoilForce = new UnityEngine.Vector2(attackForce * recoilDirection * 10, attackForce / 3);
         if (attacking)
             {
@@ -77,7 +77,7 @@ public class PlayerCombat : MonoBehaviour
 
         isCoroutineRecoilExecuting = true;
         yield return new WaitForSeconds(time);
-        currentEnemy?.AddForce(recoilForce, ForceMode2D.Impulse);
+        currentEnemy.AddForce(recoilForce, ForceMode2D.Impulse);
         attacking = false;
         isCoroutineRecoilExecuting = false;
     }

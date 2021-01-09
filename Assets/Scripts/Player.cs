@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        UpdateInputMovement();       
+        UpdateInputMovement();
     }
 
     private void FixedUpdate()
@@ -79,7 +79,10 @@ public class Player : MonoBehaviour
                 Grounded = true;
 
                 if (!wasGrounded)
-                    CreateDust();
+                {
+                        CreateDust();
+                        StartCoroutine(JumpSqueeze(1.15f, 0.8f, 0.05f));
+                }
 
                 animator.SetBool("IsFalling", false);
                 animator.SetBool("IsJumping", false);
@@ -112,6 +115,7 @@ public class Player : MonoBehaviour
                 Rigidbody.velocity = new Vector2(Rigidbody.velocity.x, JumpForce + jumpTimeCounter*10);
                 jumpTimeCounter -= Time.deltaTime;
                 isJumping = true;
+                StartCoroutine(JumpSqueeze(0.7f, 1.2f, 0.1f));
             }
             else
             {
@@ -139,6 +143,27 @@ public class Player : MonoBehaviour
         }
 
         ActualRotation = Quaternion.Euler(Vector3.up * RotationValue);
+    }
+
+    IEnumerator JumpSqueeze(float xSqueeze, float ySqueeze, float seconds)
+    {
+        Vector3 originalSize = Vector3.one;
+        Vector3 newSize = new Vector3(xSqueeze, ySqueeze, originalSize.z);
+        float t = 0f;
+        while (t <= 1.0)
+        {
+            t += Time.deltaTime / seconds;
+            transform.localScale = Vector3.Lerp(originalSize, newSize, t);
+            yield return null;
+        }
+        t = 0f;
+        while (t <= 1.0)
+        {
+            t += Time.deltaTime / seconds;
+            transform.localScale = Vector3.Lerp(newSize, originalSize, t);
+            yield return null;
+        }
+
     }
 
     void UpdateMovement()

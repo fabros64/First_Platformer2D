@@ -7,11 +7,12 @@ public class Detector : MonoBehaviour
     public Enemy enemy;   
     public Transform attackPoint;
     public GameObject alert;
+    public PlayerCombat playerCombat;
 
     int triggerCounter;
     public int numberOfPlayerColliders;
 
-    bool following;    
+    bool following;
 
     void Start()
     {
@@ -23,8 +24,10 @@ public class Detector : MonoBehaviour
     private void FixedUpdate()
     {
         if (following)
+        {
             enemy.FollowPlayer();
-
+        }
+        playerCombat.IsBeignFollowed = following;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -37,25 +40,23 @@ public class Detector : MonoBehaviour
             {
                 enemy.animator.SetTrigger("NoticePlayer");
                 alert.GetComponent<SpriteRenderer>().enabled = true;
-                StartCoroutine(FollowWithDelay(collision.GetComponent<PlayerCombat>()));               
+                StartCoroutine(FollowWithDelay());               
             }
         }
     }
 
-    IEnumerator FollowWithDelay(PlayerCombat pc)
+    IEnumerator FollowWithDelay()
     {
+        
         yield return new WaitForSeconds(1f);
         alert.GetComponent<SpriteRenderer>().enabled = false;
         enemy.animator.SetBool("FollowingPlayer", true);
         following = true;
-        pc.IsBeignFollowed = true;
     }
 
-    IEnumerator StopFollowWithDelay(PlayerCombat pc)
+    IEnumerator StopFollowWithDelay()
     {
-        pc.IsBeignFollowed = false;
         yield return new WaitForSeconds(1f);
-        enemy.animator.SetBool("FollowingPlayer", false);
         following = false;
     }
 
@@ -64,7 +65,7 @@ public class Detector : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             triggerCounter--;
-            StartCoroutine(StopFollowWithDelay(collision.GetComponent<PlayerCombat>()));
+            StartCoroutine(StopFollowWithDelay());
         }
     } 
 }

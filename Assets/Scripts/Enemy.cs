@@ -99,7 +99,7 @@ public class Enemy : MonoBehaviour
 
         isCoroutineRecoilExecuting = true;
         yield return new WaitForSeconds(time);
-        player.GetComponent<Rigidbody2D>().AddForce(new Vector2(jumpDirection * (isDead?0.5f:30), 5), ForceMode2D.Impulse);
+        player.GetComponent<Rigidbody2D>().AddForce(new Vector2(jumpDirection * (isDead ? 0.5f : 30), 5), ForceMode2D.Impulse);
         isCoroutineRecoilExecuting = false;
     }
 
@@ -119,10 +119,13 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Die()
     {
-        animator.SetBool("IsDead", true);        
+        animator.SetBool("IsDead", true);
         this.enabled = false;
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.4f);
+        
         GetComponent<Rigidbody2D>().simulated = false;
+       // yield return new WaitForSeconds(5f);
+       // gameObject.SetActive(false);
     }
 
     void SetProperDirection()
@@ -156,7 +159,7 @@ public class Enemy : MonoBehaviour
     public void FollowPlayer()
     {
         SetProperDirection();
-            enemyRigidBody.velocity = new Vector3(enemyRigidBody.velocity.x/15 + WalkingDirection.x, enemyRigidBody.velocity.y);
+        enemyRigidBody.velocity = new Vector3(enemyRigidBody.velocity.x/15 + WalkingDirection.x, enemyRigidBody.velocity.y);
     }
 
     public void FreeMovement()
