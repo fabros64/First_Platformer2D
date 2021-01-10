@@ -8,6 +8,8 @@ public class BackgroundParallax : MonoBehaviour
     public GameObject cam;
     public float parallaxEffect;
 
+    private float temp, distance;
+
     void Start()
     {
         startpos = transform.position.x;
@@ -16,8 +18,12 @@ public class BackgroundParallax : MonoBehaviour
 
     void FixedUpdate()
     {
-        float distance = (cam.transform.position.x * parallaxEffect);
+        temp = (cam.transform.position.x * (1 - parallaxEffect));
+        distance = (cam.transform.position.x * parallaxEffect);
 
         transform.position = new Vector3(startpos + distance, transform.position.y, transform.position.z);
+
+        if (temp > startpos + length) startpos += length;
+        else if (temp < startpos - length) startpos -= length;
     }
 }

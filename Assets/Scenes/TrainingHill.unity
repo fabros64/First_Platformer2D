@@ -677,7 +677,7 @@ MonoBehaviour:
   m_ShowCameraFrustum: 1
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
-  m_UpdateMethod: 2
+  m_UpdateMethod: 0
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
@@ -1142,6 +1142,18 @@ PrefabInstance:
     - target: {fileID: 7060337480100757900, guid: ba446c055783439468043c57282df246, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7060337480100757901, guid: ba446c055783439468043c57282df246, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -2125756285
+      objectReference: {fileID: 0}
+    - target: {fileID: 7060337480100757901, guid: ba446c055783439468043c57282df246, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7060337480100757901, guid: ba446c055783439468043c57282df246, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7060337480100757902, guid: ba446c055783439468043c57282df246, type: 3}
       propertyPath: player
@@ -2099,6 +2111,14 @@ PrefabInstance:
     - target: {fileID: 7060337480100757900, guid: ba446c055783439468043c57282df246, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7060337480100757901, guid: ba446c055783439468043c57282df246, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -2125756285
+      objectReference: {fileID: 0}
+    - target: {fileID: 7060337480100757901, guid: ba446c055783439468043c57282df246, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7060337480100757902, guid: ba446c055783439468043c57282df246, type: 3}
       propertyPath: player

@@ -16,7 +16,6 @@ public class PlayerCombat : MonoBehaviour
 
     public int attackForce = 10;
     int basicAttackForce;
-    bool attacking;
     private bool isCoroutineRecoilExecuting = false;
 
     public float attackRate = 2f;
@@ -33,7 +32,6 @@ public class PlayerCombat : MonoBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
-        attacking = false;
         basicAttackForce = attackForce;
     }
 
@@ -68,7 +66,6 @@ public class PlayerCombat : MonoBehaviour
         foreach (Collider2D enemy in hitEnemies)
         {
             enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
-            attacking = true;
             break;
         }
     }
