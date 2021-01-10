@@ -17,7 +17,6 @@ public class PlayerCombat : MonoBehaviour
     public int attackForce = 10;
     int basicAttackForce;
     bool attacking;
-    int recoilDirection;
     private bool isCoroutineRecoilExecuting = false;
 
     public float attackRate = 2f;
@@ -26,25 +25,20 @@ public class PlayerCombat : MonoBehaviour
     public int maxHealth = 100;
     int currentHealth;
 
-    Rigidbody2D currentEnemy;
-
-    UnityEngine.Vector2 recoilForce;
+    bool isDead = false;
 
     public bool IsBeignFollowed { get; set; } = false;
+    public List<GameObject> EnemiesFollowed { get; set; } = new List<GameObject>();
 
     private void Start()
     {
         currentHealth = maxHealth;
         attacking = false;
-        recoilDirection = player.RotationValue == 0 ? 1 : (-1);
-        recoilForce = new UnityEngine.Vector2(attackForce * recoilDirection * 10, attackForce / 2);
         basicAttackForce = attackForce;
     }
 
     void Update()
     {
-        recoilDirection = player.RotationValue == 0 ? 1 : (-1);
-
         if (Time.time >= nextAttackTime)
         {
             animator.SetBool("IsAttacking", false);
@@ -58,28 +52,10 @@ public class PlayerCombat : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (IsBeignFollowed)
+        if (IsBeignFollowed && EnemiesFollowed.Count > 0)
             attackForce = basicAttackForce;
-        else if (!IsBeignFollowed)
+        if (!IsBeignFollowed || EnemiesFollowed.Count == 0)
             attackForce = 3;
-
-        recoilForce = new UnityEngine.Vector2(attackForce * recoilDirection * 10, attackForce / 3);
-        if (attacking)
-            {
-                StartCoroutine(RecoilWithDelay(0.2f));
-            }
-    }
-
-    IEnumerator RecoilWithDelay(float time)
-    {
-        if (isCoroutineRecoilExecuting)
-            yield break;
-
-        isCoroutineRecoilExecuting = true;
-        yield return new WaitForSeconds(time);
-        currentEnemy.AddForce(recoilForce, ForceMode2D.Impulse);
-        attacking = false;
-        isCoroutineRecoilExecuting = false;
     }
 
     void Attack1()
@@ -92,18 +68,18 @@ public class PlayerCombat : MonoBehaviour
         foreach (Collider2D enemy in hitEnemies)
         {
             enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
-            currentEnemy = enemy.GetComponent<Rigidbody2D>();
             attacking = true;
             break;
         }
     }
 
-    public void TakeDamage(int damage, ref bool isDead)
+    public void TakeDamage(int damage, float recoilDirection)
     {
         if (currentHealth > 0)
         {
             currentHealth -= damage;
             animator.SetTrigger("Hurt");
+            StartCoroutine(RecoilWithDelay(0.2f, recoilDirection));
         }
 
         if (currentHealth <= 0 && !isDead)
@@ -111,6 +87,16 @@ public class PlayerCombat : MonoBehaviour
             isDead = true;
             StartCoroutine(Die());           
         }
+    }
+    IEnumerator RecoilWithDelay(float time, float recoilDirection)
+    {
+        if (isCoroutineRecoilExecuting)
+            yield break;
+
+        isCoroutineRecoilExecuting = true;
+        yield return new WaitForSeconds(time);
+        player.GetComponent<Rigidbody2D>().AddForce(new UnityEngine.Vector2(recoilDirection * (isDead ? 0.5f : 30), 5), ForceMode2D.Impulse);
+        isCoroutineRecoilExecuting = false;
     }
 
     IEnumerator Die()

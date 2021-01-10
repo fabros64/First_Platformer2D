@@ -35,6 +35,11 @@ public class Enemy : MonoBehaviour
 
     bool isDead = false;
 
+    public int recoilForce = 100;
+    int basicRecoilForce;
+
+    public bool IsFollowing { get; set; } = false;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -45,10 +50,16 @@ public class Enemy : MonoBehaviour
         flipDirection = 0;
         jumpDirection = -1;
         WalkingDirection = new Vector3(0, enemyRigidBody.velocity.y);
+        basicRecoilForce = recoilForce;
     }
 
     void FixedUpdate()
     {
+        if (IsFollowing)
+            recoilForce = basicRecoilForce;
+        if (!IsFollowing)
+            recoilForce = 30;
+
         if (Time.time >= nextAttackTime)
         {
             StartCoroutine(Attack());
@@ -63,6 +74,12 @@ public class Enemy : MonoBehaviour
         Collider2D[] hitObstacles = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, obstacleLayers);
         if(hitObstacles.Length > 0)
         {
+            foreach(Collider2D obstacle in hitObstacles)
+            {
+                if (obstacle.gameObject == gameObject && hitObstacles.Length == 1)
+                    yield break;
+            }
+
             if (isCoroutineJumpExecuting)
                 yield break;
             isCoroutineJumpExecuting = true;
@@ -84,12 +101,26 @@ public class Enemy : MonoBehaviour
             {
                 foreach (Collider2D player in hitEnemies)
                 {
-                    player.GetComponent<PlayerCombat>().TakeDamage(attackDamage, ref isDead);
-                    StartCoroutine(RecoilWithDelay(0.2f));
+                    player.GetComponent<PlayerCombat>().TakeDamage(attackDamage, jumpDirection);
                     break;
                 }
             }
         }        
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (currentHealth > 0)
+        {
+            currentHealth -= damage;
+            animator.SetTrigger("Hurt");
+            StartCoroutine(RecoilWithDelay(0.2f));
+        }
+
+        if(currentHealth <= 0)
+        {
+            StartCoroutine(Die());
+        }
     }
 
     IEnumerator RecoilWithDelay(float time)
@@ -99,33 +130,24 @@ public class Enemy : MonoBehaviour
 
         isCoroutineRecoilExecuting = true;
         yield return new WaitForSeconds(time);
-        player.GetComponent<Rigidbody2D>().AddForce(new Vector2(jumpDirection * (isDead ? 0.5f : 30), 5), ForceMode2D.Impulse);
+        enemyRigidBody.AddForce(new Vector2(jumpDirection * (-1) * (isDead || !IsFollowing ? 30f : recoilForce * 10), recoilForce/3), ForceMode2D.Impulse);
         isCoroutineRecoilExecuting = false;
     }
 
-    public void TakeDamage(int damage)
-    {
-        if (currentHealth > 0)
-        {
-            currentHealth -= damage;
-            animator.SetTrigger("Hurt");
-        }
-
-        if(currentHealth <= 0)
-        {
-            StartCoroutine(Die());
-        }
-    }
-
     IEnumerator Die()
-    {
+    {        
         animator.SetBool("IsDead", true);
+        isDead = true;
         this.enabled = false;
-        yield return new WaitForSeconds(0.4f);
+        gameObject.GetComponentInChildren<Detector>().enabled = false;
+        IsFollowing = false;
+
+        yield return new WaitForSeconds(1f);
         
-        GetComponent<Rigidbody2D>().simulated = false;
-       // yield return new WaitForSeconds(5f);
-       // gameObject.SetActive(false);
+        GetComponent<Rigidbody2D>().simulated = false;       
+
+        // yield return new WaitForSeconds(5f);
+        // gameObject.SetActive(false);
     }
 
     void SetProperDirection()
@@ -158,9 +180,11 @@ public class Enemy : MonoBehaviour
 
     public void FollowPlayer()
     {
-        SetProperDirection();
-        enemyRigidBody.velocity = new Vector3(enemyRigidBody.velocity.x/15 + WalkingDirection.x, enemyRigidBody.velocity.y);
+
+            SetProperDirection();
+            enemyRigidBody.velocity = new Vector3(enemyRigidBody.velocity.x / 15 + WalkingDirection.x, enemyRigidBody.velocity.y);
     }
+
 
     public void FreeMovement()
     {

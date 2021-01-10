@@ -194,6 +194,5 @@ public class Player : MonoBehaviour
     void CreateDust()
     {
         dust.Play();
-    }
-    
+    }    
 }
