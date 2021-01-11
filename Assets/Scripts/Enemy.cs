@@ -61,11 +61,12 @@ public class Enemy : MonoBehaviour
             recoilForce = 30;
 
         jumpDirection = flipDirection == 0 ? (-1) : 1;
+        
 
         if (Time.time >= nextAttackTime)
         {
-            StartCoroutine(Attack());
-            StartCoroutine(Jump(1));
+            StartCoroutine(Jump(0.5f));
+            StartCoroutine(Attack());            
             nextAttackTime = Time.time + Random.Range(10f / attackRate, 25f / attackRate);
         }
     }
@@ -109,13 +110,13 @@ public class Enemy : MonoBehaviour
         }        
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, float time)
     {
         if (currentHealth > 0)
         {
             currentHealth -= damage;
             animator.SetTrigger("Hurt");
-            StartCoroutine(RecoilWithDelay(0.2f));
+            StartCoroutine(RecoilWithDelay(time));
         }
 
         if(currentHealth <= 0)
@@ -141,11 +142,13 @@ public class Enemy : MonoBehaviour
         isDead = true;
         this.enabled = false;
         gameObject.GetComponentInChildren<Detector>().enabled = false;
+        gameObject.GetComponentInChildren<BoxCollider2D>().enabled = false;
         IsFollowing = false;
 
-        yield return new WaitForSeconds(1f);
-        
-        GetComponent<Rigidbody2D>().simulated = false;       
+        yield return new WaitForSeconds(0.3f);
+
+        GetComponent<CapsuleCollider2D>().enabled = false;
+        //GetComponent<Rigidbody2D>().simulated = false;       
 
         // yield return new WaitForSeconds(5f);
         // gameObject.SetActive(false);
@@ -157,7 +160,9 @@ public class Enemy : MonoBehaviour
         {
             flipDirection = 0;
             WalkingDirection = Vector3.right * (-1);
-            animator.SetBool("FollowingPlayer", true);
+
+            if(enemyRigidBody.velocity.magnitude != 0)
+                animator.SetBool("FollowingPlayer", true);
         }
         else if (Mathf.Abs(transform.position.x - player.position.x) < attackDistance)
         {
@@ -171,8 +176,13 @@ public class Enemy : MonoBehaviour
         {
             flipDirection = 180;
             WalkingDirection = Vector3.right;
-            animator.SetBool("FollowingPlayer", true);
+
+            if (enemyRigidBody.velocity.magnitude != 0)
+                animator.SetBool("FollowingPlayer", true);
         }
+
+        if (enemyRigidBody.velocity.magnitude == 0)
+            animator.SetBool("FollowingPlayer", false);
 
         WalkingDirection = WalkingDirection.normalized * WalkingSpeed;
         WalkingDirection.x *= Time.fixedDeltaTime * 5;

@@ -17,7 +17,7 @@ TagManager:
   - Ground
   - Enemy
   - Detector
-  - 
+  - Flora
   - 
   - 
   - 
@@ -46,4 +46,7 @@ TagManager:
     locked: 0
   - name: Enemy
     uniqueID: 2169211011
+    locked: 0
+  - name: Flora
+    uniqueID: 373656143
     locked: 0

@@ -9,30 +9,33 @@ public class PlayerCombat : MonoBehaviour
     public Player player;
 
     public Transform attackPoint;
+    public GameObject fireBall;
+    public LayerMask fireBallHitLayers;
     public LayerMask enemyLayers;
 
     public float attackRange = 0.1f;
     public int attackDamage = 40;
 
-    public int attackForce = 10;
-    int basicAttackForce;
     private bool isCoroutineRecoilExecuting = false;
 
     public float attackRate = 2f;
     float nextAttackTime = 0f;
+    public float spellRate = 1f;
+    float nextSpellTime = 0f;
+
+    public float fireBallSpeed = 10f;
 
     public int maxHealth = 100;
     int currentHealth;
 
     bool isDead = false;
 
-    public bool IsBeignFollowed { get; set; } = false;
-    public List<GameObject> EnemiesFollowed { get; set; } = new List<GameObject>();
+    public bool IsBeignFollowed { get; set; } = false;  // ? to remove
+    public List<GameObject> EnemiesFollowed { get; set; } = new List<GameObject>();  // ? to remove
 
     private void Start()
     {
         currentHealth = maxHealth;
-        basicAttackForce = attackForce;
     }
 
     void Update()
@@ -45,16 +48,40 @@ public class PlayerCombat : MonoBehaviour
                 Attack1();
                 nextAttackTime = Time.time + 1f / attackRate;
             }          
-        }       
+        }      
+        
+        if(Time.time >= nextSpellTime)
+        {
+            animator.SetBool("IsCastingSpell", false);
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                CastSpell();
+                nextSpellTime = Time.time + attackRate / spellRate;
+            }
+        }
     }
 
     private void FixedUpdate()
     {
-        if (IsBeignFollowed && EnemiesFollowed.Count > 0)
-            attackForce = basicAttackForce;
-        if (!IsBeignFollowed || EnemiesFollowed.Count == 0)
-            attackForce = 3;
+
     }
+
+    void CastSpell()
+    {
+        animator.SetTrigger("CastSpell");
+        animator.SetBool("IsCastingSpell", true);
+        
+        int direction = gameObject.transform.rotation.y == 0 ? 1 : (-1);
+
+        float x_RelativeToPlayer = 0.49f * direction;
+        float y_RelativeToPlayer = (-0.065f) * direction;
+
+        var fireball = Instantiate(fireBall);
+        fireball.transform.rotation = gameObject.transform.rotation;
+        fireball.transform.position = new UnityEngine.Vector3(gameObject.transform.position.x + x_RelativeToPlayer, gameObject.transform.position.y + y_RelativeToPlayer, 0);
+        fireball.GetComponent<Rigidbody2D>().velocity = UnityEngine.Vector2.right * direction * fireBallSpeed;
+    }
+
 
     void Attack1()
     {
@@ -65,7 +92,7 @@ public class PlayerCombat : MonoBehaviour
 
         foreach (Collider2D enemy in hitEnemies)
         {
-            enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+            enemy.GetComponent<Enemy>().TakeDamage(attackDamage, 0.2f);
             break;
         }
     }
@@ -85,6 +112,7 @@ public class PlayerCombat : MonoBehaviour
             StartCoroutine(Die());           
         }
     }
+
     IEnumerator RecoilWithDelay(float time, float recoilDirection)
     {
         if (isCoroutineRecoilExecuting)
