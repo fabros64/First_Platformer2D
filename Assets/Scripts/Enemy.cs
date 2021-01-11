@@ -60,10 +60,11 @@ public class Enemy : MonoBehaviour
         if (!IsFollowing)
             recoilForce = 30;
 
+        jumpDirection = flipDirection == 0 ? (-1) : 1;
+
         if (Time.time >= nextAttackTime)
         {
             StartCoroutine(Attack());
-            jumpDirection = flipDirection == 0 ? (-1) : 1;
             StartCoroutine(Jump(1));
             nextAttackTime = Time.time + Random.Range(10f / attackRate, 25f / attackRate);
         }
