@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     public LayerMask playerLayer;
     public LayerMask obstacleLayers;
     public Transform player;
+    public GameObject floatingPoints;
 
     public int maxHealth = 100;
     int currentHealth;
@@ -116,7 +117,7 @@ public class Enemy : MonoBehaviour
         {
             currentHealth -= damage;
             animator.SetTrigger("Hurt");
-            StartCoroutine(RecoilWithDelay(time));
+            StartCoroutine(RecoilWithDelay(damage, time));
         }
 
         if(currentHealth <= 0)
@@ -125,14 +126,18 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    IEnumerator RecoilWithDelay(float time)
+    IEnumerator RecoilWithDelay(float damage, float time)
     {
         if (isCoroutineRecoilExecuting)
             yield break;
 
         isCoroutineRecoilExecuting = true;
         yield return new WaitForSeconds(time);
-        enemyRigidBody.AddForce(new Vector2(jumpDirection * (-1) * (isDead || !IsFollowing ? 30f : recoilForce * 10), recoilForce/3), ForceMode2D.Impulse);
+
+        GameObject points = Instantiate(floatingPoints, new Vector3(transform.position.x, transform.position.y + GetComponent<CapsuleCollider2D>().size.y/2), Quaternion.identity, gameObject.transform);
+        points.transform.GetChild(0).GetComponent<TextMesh>().text = damage.ToString();
+
+        enemyRigidBody.AddForce(new Vector2(jumpDirection * (-1) * (isDead || !IsFollowing ? 30f : recoilForce * 10), recoilForce/3), ForceMode2D.Impulse);       
         isCoroutineRecoilExecuting = false;
     }
 
@@ -140,14 +145,16 @@ public class Enemy : MonoBehaviour
     {        
         animator.SetBool("IsDead", true);
         isDead = true;
-        this.enabled = false;
+        
         gameObject.GetComponentInChildren<Detector>().enabled = false;
         gameObject.GetComponentInChildren<BoxCollider2D>().enabled = false;
         IsFollowing = false;
 
-        yield return new WaitForSeconds(0.3f);
+        this.enabled = false;
 
+        yield return new WaitForSeconds(0.3f);
         GetComponent<CapsuleCollider2D>().enabled = false;
+
         //GetComponent<Rigidbody2D>().simulated = false;       
 
         // yield return new WaitForSeconds(5f);

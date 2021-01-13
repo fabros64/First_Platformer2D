@@ -426,7 +426,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 252212111}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.9699993, y: -0.53799975, z: -10}
+  m_LocalPosition: {x: -8.07, y: -0.67799973, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1042408976}
@@ -1694,6 +1694,10 @@ PrefabInstance:
       propertyPath: recoilForce
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 7060337480100757902, guid: ba446c055783439468043c57282df246, type: 3}
+      propertyPath: floatingPoints
+      value: 
+      objectReference: {fileID: 6999635846298301395, guid: fbdb77638b531cc48be28f804947066e, type: 3}
     - target: {fileID: 7060337480100757904, guid: ba446c055783439468043c57282df246, type: 3}
       propertyPath: m_Name
       value: Skeleton (1)
@@ -2962,9 +2966,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1826255273006764126, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
+    - target: {fileID: 2094855130, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094855130, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094855130, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
+      propertyPath: CollisionModule.collidesWith.m_Bits
+      value: 6967
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094855130, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.9245283
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094855130, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.3009078
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094855130, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.3009078
       objectReference: {fileID: 0}
     - target: {fileID: 1826255273105638289, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
       propertyPath: m_Name
@@ -2972,11 +2996,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1826255273105638291, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.97
+      value: -8.07
       objectReference: {fileID: 0}
     - target: {fileID: 1826255273105638291, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.31
+      value: -0.45
       objectReference: {fileID: 0}
     - target: {fileID: 1826255273105638291, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3013,30 +3037,6 @@ PrefabInstance:
     - target: {fileID: 1826255273105638291, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1826255273105638291, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1826255273105638296, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1826255273105638297, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
-      propertyPath: fireBallPrefab
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1826255273105638297, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
-      propertyPath: fireBall
-      value: 
-      objectReference: {fileID: 8598889191234547623, guid: 322a15bdf92d8444aa2b958ca585ef05, type: 3}
-    - target: {fileID: 1826255273105638297, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
-      propertyPath: fireBallHitLayers.m_Bits
-      value: 1536
-      objectReference: {fileID: 0}
-    - target: {fileID: 1826255273105638297, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
-      propertyPath: fireBallSpeed
-      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
@@ -3177,6 +3177,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7060337479212190544, guid: ba446c055783439468043c57282df246, type: 3}
+      propertyPath: m_TagString
+      value: Communique
+      objectReference: {fileID: 0}
     - target: {fileID: 7060337479912701258, guid: ba446c055783439468043c57282df246, type: 3}
       propertyPath: player
       value: 
@@ -3241,6 +3245,10 @@ PrefabInstance:
       propertyPath: recoilForce
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 7060337480100757902, guid: ba446c055783439468043c57282df246, type: 3}
+      propertyPath: floatingPoints
+      value: 
+      objectReference: {fileID: 6999635846298301395, guid: fbdb77638b531cc48be28f804947066e, type: 3}
     - target: {fileID: 7060337480100757904, guid: ba446c055783439468043c57282df246, type: 3}
       propertyPath: m_Name
       value: Skeleton

@@ -8,6 +8,11 @@ public class PlayerCombat : MonoBehaviour
     public Animator animator;
     public Player player;
 
+    public ParticleSystem hurtPS;
+
+    CameraShake camShake;
+    float camShakeAmount = 0.02f;
+
     public Transform attackPoint;
     public GameObject fireBall;
     public LayerMask fireBallHitLayers;
@@ -36,6 +41,7 @@ public class PlayerCombat : MonoBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
+        camShake = Game.game.GetComponent<CameraShake>();
     }
 
     void Update()
@@ -55,7 +61,7 @@ public class PlayerCombat : MonoBehaviour
             animator.SetBool("IsCastingSpell", false);
             if (Input.GetKeyDown(KeyCode.O))
             {
-                CastSpell();
+                StartCoroutine(CastSpell(0.2f));
                 nextSpellTime = Time.time + attackRate / spellRate;
             }
         }
@@ -66,7 +72,7 @@ public class PlayerCombat : MonoBehaviour
 
     }
 
-    void CastSpell()
+    IEnumerator CastSpell(float time)
     {
         animator.SetTrigger("CastSpell");
         animator.SetBool("IsCastingSpell", true);
@@ -76,6 +82,7 @@ public class PlayerCombat : MonoBehaviour
         float x_RelativeToPlayer = 0.49f * direction;
         float y_RelativeToPlayer = (-0.065f) * direction;
 
+        yield return new WaitForSeconds(time);
         var fireball = Instantiate(fireBall);
         fireball.transform.rotation = gameObject.transform.rotation;
         fireball.transform.position = new UnityEngine.Vector3(gameObject.transform.position.x + x_RelativeToPlayer, gameObject.transform.position.y + y_RelativeToPlayer, 0);
@@ -92,9 +99,21 @@ public class PlayerCombat : MonoBehaviour
 
         foreach (Collider2D enemy in hitEnemies)
         {
+            StartCoroutine(DamageEffect(0.15f));
             enemy.GetComponent<Enemy>().TakeDamage(attackDamage, 0.2f);
             break;
         }
+    }
+
+    IEnumerator DamageEffect(float time)
+    {
+        camShake.Shake(camShakeAmount, time, 0.1f);       
+        UnityEngine.Vector3 firstPosition = hurtPS.gameObject.transform.position;
+        yield return new WaitForSeconds(time);
+        hurtPS.transform.position = firstPosition;
+        hurtPS.Play();
+        yield return new WaitForSeconds(time);
+        hurtPS.transform.position = attackPoint.position;
     }
 
     public void TakeDamage(int damage, float recoilDirection)

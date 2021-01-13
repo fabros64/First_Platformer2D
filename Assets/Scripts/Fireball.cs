@@ -24,7 +24,7 @@ public class Fireball : MonoBehaviour
 
         directionShift = collision.gameObject.transform.position.x - gameObject.transform.position.x > 0 ? 1 : (-1);
         
-        StartCoroutine(Explosion(0.45f));
+        StartCoroutine(Explosion(0.28f));
         GetComponent<EdgeCollider2D>().enabled = false;
     }
 
