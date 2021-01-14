@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
+    [SerializeField]
+    private StatusIndicator statusIndicator;
+
     public Animator animator;
     public Player player;
 
@@ -31,7 +34,12 @@ public class PlayerCombat : MonoBehaviour
     public float fireBallSpeed = 10f;
 
     public int maxHealth = 100;
-    int currentHealth;
+    int _currentHealth;
+    public int currentHealth
+    {
+        get { return _currentHealth; }
+        set { _currentHealth = Mathf.Clamp(value, 0, maxHealth); }
+    }
 
     bool isDead = false;
 
@@ -42,6 +50,11 @@ public class PlayerCombat : MonoBehaviour
     {
         currentHealth = maxHealth;
         camShake = Game.game.GetComponent<CameraShake>();
+
+        if (statusIndicator != null)
+        {
+            statusIndicator.SetHealth(currentHealth, maxHealth);
+        }
     }
 
     void Update()
@@ -99,6 +112,7 @@ public class PlayerCombat : MonoBehaviour
 
         foreach (Collider2D enemy in hitEnemies)
         {
+            hurtPS.startColor = enemy.GetComponent<Enemy>().bloodColor;
             StartCoroutine(DamageEffect(0.15f));
             enemy.GetComponent<Enemy>().TakeDamage(attackDamage, 0.2f);
             break;
@@ -123,6 +137,11 @@ public class PlayerCombat : MonoBehaviour
             currentHealth -= damage;
             animator.SetTrigger("Hurt");
             StartCoroutine(RecoilWithDelay(0.2f, recoilDirection));
+        }
+
+        if (statusIndicator != null)
+        {
+            statusIndicator.SetHealth(currentHealth, maxHealth);
         }
 
         if (currentHealth <= 0 && !isDead)

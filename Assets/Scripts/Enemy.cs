@@ -12,7 +12,12 @@ public class Enemy : MonoBehaviour
     public GameObject floatingPoints;
 
     public int maxHealth = 100;
-    int currentHealth;
+    int _currentHealth;
+    public int currentHealth
+        {
+            get { return _currentHealth;}
+            set { _currentHealth = Mathf.Clamp(value, 0, maxHealth); }
+        }
 
     public int attackDamage = 10;
     public float attackRange = 0.1f;
@@ -39,11 +44,20 @@ public class Enemy : MonoBehaviour
     public int recoilForce = 100;
     int basicRecoilForce;
 
+    public Color bloodColor = Color.white;
     public bool IsFollowing { get; set; } = false;
+
+    [Header("Optional: ")]
+    [SerializeField]
+    private StatusIndicator statusIndicator;
 
     void Start()
     {
         currentHealth = maxHealth;
+        if(statusIndicator != null)
+        {
+            statusIndicator.SetHealth(currentHealth, maxHealth);
+        }
         nextAttackTime = Time.time + Random.Range(10f / attackRate, 25f / attackRate);
         enemyRigidBody = GetComponent<Rigidbody2D>();
         attackDistance = Vector2.Distance(transform.position, attackPoint.transform.position)
@@ -115,25 +129,29 @@ public class Enemy : MonoBehaviour
     {
         if (currentHealth > 0)
         {
-            currentHealth -= damage;
             animator.SetTrigger("Hurt");
+            currentHealth -= damage;
             StartCoroutine(RecoilWithDelay(damage, time));
         }
 
-        if(currentHealth <= 0)
+        if (statusIndicator != null)
+        {
+            statusIndicator.SetHealth(currentHealth, maxHealth);
+        }
+
+        if (currentHealth <= 0)
         {
             StartCoroutine(Die());
         }
     }
 
-    IEnumerator RecoilWithDelay(float damage, float time)
+    IEnumerator RecoilWithDelay(int damage, float time)
     {
         if (isCoroutineRecoilExecuting)
             yield break;
 
         isCoroutineRecoilExecuting = true;
-        yield return new WaitForSeconds(time);
-
+        yield return new WaitForSeconds(time);        
         GameObject points = Instantiate(floatingPoints, new Vector3(transform.position.x, transform.position.y + GetComponent<CapsuleCollider2D>().size.y/2), Quaternion.identity, gameObject.transform);
         points.transform.GetChild(0).GetComponent<TextMesh>().text = damage.ToString();
 
