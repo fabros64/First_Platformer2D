@@ -10,6 +10,10 @@ public class Enemy : MonoBehaviour
     public LayerMask obstacleLayers;
     public Transform player;
     public GameObject floatingPoints;
+    public ParticleSystem hurtEffectPS;
+
+    CameraShake camShake;
+    float camShakeAmount = 0.01f;
 
     public int maxHealth = 100;
     int _currentHealth;
@@ -19,7 +23,7 @@ public class Enemy : MonoBehaviour
             set { _currentHealth = Mathf.Clamp(value, 0, maxHealth); }
         }
 
-    public int attackDamage = 10;
+    DamageSystem damageSystem;
     public float attackRange = 0.1f;
 
     public float attackRate = 10f;
@@ -66,6 +70,9 @@ public class Enemy : MonoBehaviour
         jumpDirection = -1;
         WalkingDirection = new Vector3(0, enemyRigidBody.velocity.y);
         basicRecoilForce = recoilForce;
+
+        camShake = Game.game.GetComponent<CameraShake>();
+        damageSystem = GetComponent<DamageSystem>();
     }
 
     void FixedUpdate()
@@ -118,11 +125,25 @@ public class Enemy : MonoBehaviour
             {
                 foreach (Collider2D player in hitEnemies)
                 {
-                    player.GetComponent<PlayerCombat>().TakeDamage(attackDamage, jumpDirection);
+                    hurtEffectPS.startColor = player.GetComponent<PlayerCombat>().bloodColor;
+                    StartCoroutine(DamageEffect(0.15f));
+                    player.GetComponent<PlayerCombat>().TakeDamage(damageSystem.Damage(), jumpDirection);
                     break;
                 }
             }
         }        
+    }
+
+    IEnumerator DamageEffect(float time)
+    {
+        camShake.Shake(camShakeAmount, time, 0.1f);
+        UnityEngine.Vector3 firstPosition = attackPoint.position;
+        yield return new WaitForSeconds(time);
+        var hurtPS = Instantiate(hurtEffectPS);
+        hurtPS.transform.position = firstPosition;
+        hurtPS.Play();
+        yield return new WaitForSeconds(time);
+        hurtPS.transform.position = attackPoint.position;
     }
 
     public void TakeDamage(int damage, float time)

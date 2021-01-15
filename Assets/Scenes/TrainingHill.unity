@@ -890,6 +890,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac15e61799d553b428389acb25ba7b5e, type: 3}
+--- !u!1 &488892239 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7060337480100757904, guid: ba446c055783439468043c57282df246, type: 3}
+  m_PrefabInstance: {fileID: 7060337478455790237}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &488892240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488892239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc852ba5791e31f47b435fb823b3db35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minDamage: 10
+  maxDamage: 15
+  criticalDamage: 20
+  criticalChancePercentage: 5
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2020,6 +2041,10 @@ PrefabInstance:
       propertyPath: statusIndicator
       value: 
       objectReference: {fileID: 1273692485}
+    - target: {fileID: 7060337480100757902, guid: ba446c055783439468043c57282df246, type: 3}
+      propertyPath: hurtEffectPS
+      value: 
+      objectReference: {fileID: 1703001522983011835, guid: 731dcd067dd773c45b70a5c45576bc4d, type: 3}
     - target: {fileID: 7060337480100757904, guid: ba446c055783439468043c57282df246, type: 3}
       propertyPath: m_Name
       value: Skeleton (1)
@@ -2526,6 +2551,22 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
+--- !u!114 &1338173747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338173745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc852ba5791e31f47b435fb823b3db35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minDamage: 10
+  maxDamage: 15
+  criticalDamage: 20
+  criticalChancePercentage: 5
 --- !u!4 &1343238140 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7170707678554890522, guid: ac15e61799d553b428389acb25ba7b5e, type: 3}
@@ -3561,30 +3602,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2094855130, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 0.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 2094855130, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 2094855130, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
-      propertyPath: CollisionModule.collidesWith.m_Bits
-      value: 6967
-      objectReference: {fileID: 0}
-    - target: {fileID: 2094855130, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.r
-      value: 0.9245283
-      objectReference: {fileID: 0}
-    - target: {fileID: 2094855130, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.3009078
-      objectReference: {fileID: 0}
-    - target: {fileID: 2094855130, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.b
-      value: 0.3009078
-      objectReference: {fileID: 0}
     - target: {fileID: 1826255273105638289, guid: 0bbc6fb3f4be10b47b3a93f373f2ba8a, type: 3}
       propertyPath: m_Name
       value: Hero
@@ -3848,6 +3865,10 @@ PrefabInstance:
       propertyPath: bloodColor.b
       value: 0.83921576
       objectReference: {fileID: 0}
+    - target: {fileID: 7060337480100757902, guid: ba446c055783439468043c57282df246, type: 3}
+      propertyPath: hurtEffectPS
+      value: 
+      objectReference: {fileID: 1703001522983011835, guid: 731dcd067dd773c45b70a5c45576bc4d, type: 3}
     - target: {fileID: 7060337480100757904, guid: ba446c055783439468043c57282df246, type: 3}
       propertyPath: m_Name
       value: Skeleton

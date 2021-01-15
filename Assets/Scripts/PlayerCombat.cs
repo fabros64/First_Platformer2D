@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
@@ -8,10 +9,12 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField]
     private StatusIndicator statusIndicator;
 
+    public GameObject floatingPoints;
     public Animator animator;
     public Player player;
 
     public ParticleSystem hurtPS;
+    public Color bloodColor;
 
     CameraShake camShake;
     float camShakeAmount = 0.02f;
@@ -22,7 +25,7 @@ public class PlayerCombat : MonoBehaviour
     public LayerMask enemyLayers;
 
     public float attackRange = 0.1f;
-    public int attackDamage = 40;
+    public DamageSystem damageSystem;
 
     private bool isCoroutineRecoilExecuting = false;
 
@@ -41,6 +44,7 @@ public class PlayerCombat : MonoBehaviour
         set { _currentHealth = Mathf.Clamp(value, 0, maxHealth); }
     }
 
+    bool takingDamage = false;
     bool isDead = false;
 
     public bool IsBeignFollowed { get; set; } = false;  // ? to remove
@@ -55,6 +59,8 @@ public class PlayerCombat : MonoBehaviour
         {
             statusIndicator.SetHealth(currentHealth, maxHealth);
         }
+
+        damageSystem = GetComponent<DamageSystem>();
     }
 
     void Update()
@@ -62,7 +68,7 @@ public class PlayerCombat : MonoBehaviour
         if (Time.time >= nextAttackTime)
         {
             animator.SetBool("IsAttacking", false);
-            if (Input.GetKeyDown(KeyCode.I))
+            if (Input.GetKeyDown(KeyCode.I) && !takingDamage)
             {
                 Attack1();
                 nextAttackTime = Time.time + 1f / attackRate;
@@ -72,7 +78,7 @@ public class PlayerCombat : MonoBehaviour
         if(Time.time >= nextSpellTime)
         {
             animator.SetBool("IsCastingSpell", false);
-            if (Input.GetKeyDown(KeyCode.O))
+            if (Input.GetKeyDown(KeyCode.O) && !takingDamage)
             {
                 StartCoroutine(CastSpell(0.2f));
                 nextSpellTime = Time.time + attackRate / spellRate;
@@ -114,10 +120,12 @@ public class PlayerCombat : MonoBehaviour
         {
             hurtPS.startColor = enemy.GetComponent<Enemy>().bloodColor;
             StartCoroutine(DamageEffect(0.15f));
-            enemy.GetComponent<Enemy>().TakeDamage(attackDamage, 0.2f);
+            enemy.GetComponent<Enemy>().TakeDamage(damageSystem.Damage(), 0.2f);
             break;
         }
     }
+
+
 
     IEnumerator DamageEffect(float time)
     {
@@ -135,8 +143,8 @@ public class PlayerCombat : MonoBehaviour
         if (currentHealth > 0)
         {
             currentHealth -= damage;
-            animator.SetTrigger("Hurt");
-            StartCoroutine(RecoilWithDelay(0.2f, recoilDirection));
+            takingDamage = true;
+            StartCoroutine(RecoilWithDelay(0.2f, recoilDirection, damage));
         }
 
         if (statusIndicator != null)
@@ -151,23 +159,29 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    IEnumerator RecoilWithDelay(float time, float recoilDirection)
+    IEnumerator RecoilWithDelay(float time, float recoilDirection, float damage)
     {
         if (isCoroutineRecoilExecuting)
             yield break;
 
         isCoroutineRecoilExecuting = true;
         yield return new WaitForSeconds(time);
+        animator.SetTrigger("Hurt");
         player.GetComponent<Rigidbody2D>().AddForce(new UnityEngine.Vector2(recoilDirection * (isDead ? 0.5f : 30), 5), ForceMode2D.Impulse);
+        GameObject points = Instantiate(floatingPoints, new UnityEngine.Vector3(transform.position.x, transform.position.y + GetComponent<BoxCollider2D>().size.y / 2), UnityEngine.Quaternion.identity, gameObject.transform);
+        points.transform.GetChild(0).GetComponent<TextMesh>().text = damage.ToString();
+        points.GetComponentInChildren<TextMesh>().color = Color.green;
+        takingDamage = false;
         isCoroutineRecoilExecuting = false;
     }
 
     IEnumerator Die()
-    {
-        animator.SetTrigger("Dead");
+    {        
         GetComponent<Player>().enabled = false;
         this.enabled = false;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.4f);
+        animator.SetTrigger("Dead");
+        yield return new WaitForSeconds(0.4f);
         GetComponent<Rigidbody2D>().simulated = false;
     }
 

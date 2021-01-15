@@ -6,6 +6,7 @@ using UnityEngine;
 public class Fireball : MonoBehaviour
 {
     Animator animator;
+    DamageSystem damageSystem;
 
     int directionShift;
 
@@ -13,6 +14,7 @@ public class Fireball : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         Destroy(gameObject, 5f);
+        damageSystem = GetComponent<DamageSystem>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -20,7 +22,7 @@ public class Fireball : MonoBehaviour
         var enemy = collision.gameObject.GetComponent<Enemy>();
 
         if (enemy != null)
-            enemy.TakeDamage(50, 0f);
+            enemy.TakeDamage(damageSystem.Damage(), 0f);
 
         directionShift = collision.gameObject.transform.position.x - gameObject.transform.position.x > 0 ? 1 : (-1);
         

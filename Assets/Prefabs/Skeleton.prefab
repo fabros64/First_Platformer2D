@@ -113,6 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBarRect: {fileID: 1201818901}
+  text: {fileID: 0}
   gradient:
     serializedVersion: 2
     key0: {r: 0.8490566, g: 0.048832428, b: 0, a: 1}
@@ -344,7 +345,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.30287552}
+  m_Offset: {x: 0, y: -0.3974321}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -355,7 +356,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 6.24, y: 3.565751}
+  m_Size: {x: 6.24, y: 3.7548642}
   m_EdgeRadius: 0
 --- !u!114 &7060337479912701258
 MonoBehaviour:
@@ -389,6 +390,7 @@ GameObject:
   - component: {fileID: 7060337480100757903}
   - component: {fileID: 7060337480100757902}
   - component: {fileID: 2103124790}
+  - component: {fileID: 488892240}
   m_Layer: 10
   m_Name: Skeleton
   m_TagString: Untagged
@@ -543,14 +545,14 @@ MonoBehaviour:
     m_Bits: 1536
   player: {fileID: 0}
   floatingPoints: {fileID: 6999635846298301395, guid: fbdb77638b531cc48be28f804947066e, type: 3}
+  hurtEffectPS: {fileID: 1703001522983011835, guid: 731dcd067dd773c45b70a5c45576bc4d, type: 3}
   maxHealth: 200
-  attackDamage: 10
   attackRange: 0.3
   attackRate: 15
   jumpForce: 70
   WalkingSpeed: 25
   recoilForce: 100
-  bloodColor: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
+  bloodColor: {r: 0.9686275, g: 0.9058824, b: 0.83921576, a: 1}
   statusIndicator: {fileID: 752145427}
 --- !u!68 &2103124790
 EdgeCollider2D:
@@ -579,6 +581,22 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
+--- !u!114 &488892240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7060337480100757904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc852ba5791e31f47b435fb823b3db35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minDamage: 10
+  maxDamage: 15
+  criticalDamage: 20
+  criticalChancePercentage: 5
 --- !u!1 &7060337480178095178
 GameObject:
   m_ObjectHideFlags: 0
