@@ -44,6 +44,7 @@ public class Enemy : MonoBehaviour
     bool isCoroutineRecoilExecuting = false;
 
     bool isDead = false;
+    DropSystem dropSystem;
 
     public int recoilForce = 100;
     int basicRecoilForce;
@@ -73,6 +74,7 @@ public class Enemy : MonoBehaviour
 
         camShake = Game.game.GetComponent<CameraShake>();
         damageSystem = GetComponent<DamageSystem>();
+        dropSystem = GetComponent<DropSystem>();
     }
 
     void FixedUpdate()
@@ -188,16 +190,12 @@ public class Enemy : MonoBehaviour
         gameObject.GetComponentInChildren<Detector>().enabled = false;
         gameObject.GetComponentInChildren<BoxCollider2D>().enabled = false;
         IsFollowing = false;
-
         this.enabled = false;
 
         yield return new WaitForSeconds(0.3f);
         GetComponent<CapsuleCollider2D>().enabled = false;
-
-        //GetComponent<Rigidbody2D>().simulated = false;       
-
-        // yield return new WaitForSeconds(5f);
-        // gameObject.SetActive(false);
+        if (TryGetComponent<DropSystem>(out dropSystem))
+            dropSystem.Drop();
     }
 
     void SetProperDirection()

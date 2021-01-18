@@ -391,6 +391,7 @@ GameObject:
   - component: {fileID: 7060337480100757902}
   - component: {fileID: 2103124790}
   - component: {fileID: 488892240}
+  - component: {fileID: 931563906}
   m_Layer: 10
   m_Name: Skeleton
   m_TagString: Untagged
@@ -597,6 +598,20 @@ MonoBehaviour:
   maxDamage: 15
   criticalDamage: 20
   criticalChancePercentage: 5
+--- !u!114 &931563906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7060337480100757904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ece71b51ad993cf42bdaf6e6b909d7ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropObjects:
+  - {fileID: 1038407109, guid: 1f279a58aeaea93478a1114903da6d00, type: 3}
 --- !u!1 &7060337480178095178
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -8,7 +9,6 @@ public class PlayerCombat : MonoBehaviour
 {
     [SerializeField]
     private StatusIndicator statusIndicator;
-
     public GameObject floatingPoints;
     public Animator animator;
     public Player player;
@@ -41,8 +41,22 @@ public class PlayerCombat : MonoBehaviour
     public int currentHealth
     {
         get { return _currentHealth; }
-        set { _currentHealth = Mathf.Clamp(value, 0, maxHealth); }
+        set 
+        {
+            int valueBefore = _currentHealth;
+            _currentHealth = Mathf.Clamp(value, 0, maxHealth);
+            OnHealthChanged?.Invoke(valueBefore > _currentHealth ? valueBefore-_currentHealth:_currentHealth-valueBefore
+                , valueBefore > _currentHealth ? "":"+");
+
+            if (currentHealth <= 0 && !isDead)
+            {
+                OnKilled?.Invoke();
+            }
+        }
     }
+
+    public event Action<int, string> OnHealthChanged;
+    public event Action OnKilled;
 
     bool takingDamage = false;
     bool isDead = false;
@@ -54,13 +68,20 @@ public class PlayerCombat : MonoBehaviour
     {
         currentHealth = maxHealth;
         camShake = Game.game.GetComponent<CameraShake>();
-
-        if (statusIndicator != null)
-        {
-            statusIndicator.SetHealth(currentHealth, maxHealth);
-        }
-
         damageSystem = GetComponent<DamageSystem>();
+
+        OnKilled += () =>
+        {
+            StartCoroutine(Die());
+        };
+
+        statusIndicator?.SetHealth(currentHealth, maxHealth);
+
+        OnHealthChanged += (value, additionalStr) =>
+        {
+            statusIndicator?.SetHealth(currentHealth, maxHealth);
+            FloatingPoints(value, additionalStr);
+        };
     }
 
     void Update()
@@ -142,24 +163,12 @@ public class PlayerCombat : MonoBehaviour
     {
         if (currentHealth > 0)
         {
-            currentHealth -= damage;
             takingDamage = true;
             StartCoroutine(RecoilWithDelay(0.2f, recoilDirection, damage));
         }
-
-        if (statusIndicator != null)
-        {
-            statusIndicator.SetHealth(currentHealth, maxHealth);
-        }
-
-        if (currentHealth <= 0 && !isDead)
-        {
-            isDead = true;
-            StartCoroutine(Die());           
-        }
     }
 
-    IEnumerator RecoilWithDelay(float time, float recoilDirection, float damage)
+    IEnumerator RecoilWithDelay(float time, float recoilDirection, int damage)
     {
         if (isCoroutineRecoilExecuting)
             yield break;
@@ -167,16 +176,22 @@ public class PlayerCombat : MonoBehaviour
         isCoroutineRecoilExecuting = true;
         yield return new WaitForSeconds(time);
         animator.SetTrigger("Hurt");
+        currentHealth -= damage;
         player.GetComponent<Rigidbody2D>().AddForce(new UnityEngine.Vector2(recoilDirection * (isDead ? 0.5f : 30), 5), ForceMode2D.Impulse);
-        GameObject points = Instantiate(floatingPoints, new UnityEngine.Vector3(transform.position.x, transform.position.y + GetComponent<BoxCollider2D>().size.y / 2), UnityEngine.Quaternion.identity, gameObject.transform);
-        points.transform.GetChild(0).GetComponent<TextMesh>().text = damage.ToString();
-        points.GetComponentInChildren<TextMesh>().color = Color.green;
         takingDamage = false;
         isCoroutineRecoilExecuting = false;
     }
 
+    private void FloatingPoints(int value, string additionalText = "")
+    {
+        GameObject points = Instantiate(floatingPoints, new UnityEngine.Vector3(transform.position.x, transform.position.y + GetComponent<BoxCollider2D>().size.y / 2), UnityEngine.Quaternion.identity, gameObject.transform);
+        points.transform.GetChild(0).GetComponent<TextMesh>().text = additionalText + value.ToString();
+        points.GetComponentInChildren<TextMesh>().color = Color.green;
+    }
+
     IEnumerator Die()
-    {        
+    {
+        isDead = true;
         GetComponent<Player>().enabled = false;
         this.enabled = false;
         yield return new WaitForSeconds(0.4f);
