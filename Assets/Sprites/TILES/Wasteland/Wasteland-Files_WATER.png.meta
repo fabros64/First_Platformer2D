@@ -1,0 +1,433 @@
+fileFormatVersion: 2
+guid: f9150d2c4ceec3e4d985fffee83295c6
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 9003995434550968794
+    second: Wasteland-Files_WATER_0
+  - first:
+      213: -1091678833319201622
+    second: Wasteland-Files_WATER_1
+  - first:
+      213: -2017995153601096009
+    second: Wasteland-Files_WATER_2
+  - first:
+      213: -4353983765358631346
+    second: Wasteland-Files_WATER_3
+  - first:
+      213: 3888250567550142077
+    second: Wasteland-Files_WATER_4
+  - first:
+      213: -7595271849663475066
+    second: Wasteland-Files_WATER_5
+  - first:
+      213: 3109716907749111677
+    second: Wasteland-Files_WATER_6
+  - first:
+      213: -3371326740476502679
+    second: Wasteland-Files_WATER_7
+  - first:
+      213: 8019799071491098882
+    second: Wasteland-Files_WATER_8
+  - first:
+      213: -1908894316109691121
+    second: Wasteland-Files_WATER_9
+  - first:
+      213: -6095898529580227794
+    second: Wasteland-Files_WATER_10
+  - first:
+      213: 6692033663194947204
+    second: Wasteland-Files_WATER_11
+  - first:
+      213: -1025762182715725717
+    second: Wasteland-Files_WATER_12
+  - first:
+      213: 5303499150767554176
+    second: Wasteland-Files_WATER_13
+  - first:
+      213: 2983388046146847246
+    second: Wasteland-Files_WATER_14
+  - first:
+      213: -4639850079233032209
+    second: Wasteland-Files_WATER_15
+  - first:
+      213: 5063768544590191395
+    second: Wasteland-Files_WATER_16
+  - first:
+      213: 7292755510995789255
+    second: Wasteland-Files_WATER_17
+  - first:
+      213: 3523105342166490273
+    second: Wasteland-Files_WATER_18
+  - first:
+      213: -8079527111715846561
+    second: Wasteland-Files_WATER_19
+  - first:
+      213: 93801385814319453
+    second: Wasteland-Files_WATER_20
+  - first:
+      213: 4160692994268743068
+    second: Wasteland-Files_WATER_21
+  - first:
+      213: 683379299958421957
+    second: Wasteland-Files_WATER_22
+  - first:
+      213: 915831615515218162
+    second: Wasteland-Files_WATER_23
+  - first:
+      213: -158130566225514185
+    second: Wasteland-Files_WATER_24
+  - first:
+      213: -5209692888506514521
+    second: Wasteland-Files_WATER_25
+  - first:
+      213: 1992961384896365642
+    second: Wasteland-Files_WATER_26
+  - first:
+      213: -2123744229204677483
+    second: Wasteland-Files_WATER_27
+  - first:
+      213: 4433870562699423929
+    second: Wasteland-Files_WATER_28
+  - first:
+      213: 1973933881035516246
+    second: Wasteland-Files_WATER_29
+  - first:
+      213: 4443372544646314691
+    second: Wasteland-Files_WATER_30
+  - first:
+      213: -5899506048676117552
+    second: Wasteland-Files_WATER_31
+  - first:
+      213: -8003689715958897407
+    second: Wasteland-Files_WATER_32
+  - first:
+      213: 6490508362612691599
+    second: Wasteland-Files_WATER_33
+  - first:
+      213: -7146900823272287780
+    second: Wasteland-Files_WATER_34
+  - first:
+      213: -9071271139116005947
+    second: Wasteland-Files_WATER_35
+  - first:
+      213: 7160693927735544929
+    second: Wasteland-Files_WATER_36
+  - first:
+      213: -1181799487353606918
+    second: Wasteland-Files_WATER_37
+  - first:
+      213: -5655571463504732740
+    second: Wasteland-Files_WATER_38
+  - first:
+      213: -1512257387406393442
+    second: Wasteland-Files_WATER_39
+  - first:
+      213: 4519633713442380260
+    second: Wasteland-Files_WATER_40
+  - first:
+      213: 240612471223785859
+    second: Wasteland-Files_WATER_41
+  - first:
+      213: -4659928999908760832
+    second: Wasteland-Files_WATER_42
+  - first:
+      213: -7782336484698590107
+    second: Wasteland-Files_WATER_43
+  - first:
+      213: -7921680402137641585
+    second: Wasteland-Files_WATER_44
+  - first:
+      213: -5511803319911517892
+    second: Wasteland-Files_WATER_45
+  - first:
+      213: -5486489270795541404
+    second: Wasteland-Files_WATER_46
+  - first:
+      213: 766315309382599007
+    second: Wasteland-Files_WATER_47
+  - first:
+      213: -9191417261957669017
+    second: Wasteland-Files_WATER_48
+  - first:
+      213: 8695487291275869214
+    second: Wasteland-Files_WATER_49
+  - first:
+      213: -4134489568385799327
+    second: Wasteland-Files_WATER_50
+  - first:
+      213: -1787218451099053722
+    second: Wasteland-Files_WATER_51
+  - first:
+      213: 2766284187735754063
+    second: Wasteland-Files_WATER_52
+  - first:
+      213: 6719383012947578869
+    second: Wasteland-Files_WATER_53
+  - first:
+      213: 7289771826220078918
+    second: Wasteland-Files_WATER_54
+  - first:
+      213: -773233763229247988
+    second: Wasteland-Files_WATER_55
+  - first:
+      213: -5140990938595686916
+    second: Wasteland-Files_WATER_56
+  - first:
+      213: 7046274819512889767
+    second: Wasteland-Files_WATER_57
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Wasteland-Files_WATER_26
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 112
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4481d502db68ab10800000000000000
+      internalID: 1992961384896365642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wasteland-Files_WATER_27
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 112
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59c287820e1f682e0800000000000000
+      internalID: -2123744229204677483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wasteland-Files_WATER_28
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 112
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b0b2cdf8c5488d30800000000000000
+      internalID: 4433870562699423929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wasteland-Files_WATER_29
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 112
+        width: 16
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 659ea3d0862d46b10800000000000000
+      internalID: 1973933881035516246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wasteland-Files_WATER_30
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 112
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3cafd5099c70aad30800000000000000
+      internalID: 4443372544646314691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
