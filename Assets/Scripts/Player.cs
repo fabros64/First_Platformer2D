@@ -13,6 +13,10 @@ public class Player : MonoBehaviour
     float WalkingSpeed = 40f;
 
     [SerializeField]
+    float WaterSpeed = 5f;
+    bool isInWater = false;
+
+    [SerializeField]
     float JumpForce = 400f;
 
     [SerializeField] 
@@ -47,6 +51,8 @@ public class Player : MonoBehaviour
 
     bool jump = false;
 
+    bool isCoroutineRecoilExecuting = false;
+
     private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody2D>();
@@ -63,6 +69,9 @@ public class Player : MonoBehaviour
     void Update()
     {
         UpdateInputMovement();
+
+        if(isInWater)
+            StartCoroutine(PoisonDamage());
     }
 
     private void FixedUpdate()
@@ -99,7 +108,7 @@ public class Player : MonoBehaviour
         WalkingDirection = Vector3.zero;
 
         WalkingDirection += Vector3.right * Input.GetAxisRaw("Horizontal");
-        WalkingDirection = WalkingDirection.normalized * WalkingSpeed;
+        WalkingDirection = WalkingDirection.normalized * (isInWater? WaterSpeed : WalkingSpeed);
 
         if (Input.GetButtonDown("Jump") && Grounded)
         {
@@ -193,5 +202,27 @@ public class Player : MonoBehaviour
     void CreateDust()
     {
         dust.Play();
-    }    
+    }   
+    
+    public void InWater()
+    {
+        isInWater = true;
+    }
+
+    IEnumerator PoisonDamage()
+    {
+        if (isCoroutineRecoilExecuting)
+            yield break;
+
+        isCoroutineRecoilExecuting = true;
+        yield return new WaitForSeconds(1f);
+        GetComponent<PlayerCombat>().currentHealth -= 1;
+
+        isCoroutineRecoilExecuting = false;
+    }
+
+    public void OutWater()
+    {
+        isInWater = false;
+    }
 }

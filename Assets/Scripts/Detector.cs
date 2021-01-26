@@ -46,7 +46,7 @@ public class Detector : MonoBehaviour
 
             if (triggerCounter % numberOfPlayerColliders == 0 && triggerCounter > 0)
             {
-                playerCombat.EnemiesFollowed.Add(gameObject);
+                //playerCombat.EnemiesFollowed.Add(gameObject);
                 enemy.animator.SetTrigger("NoticePlayer");
                 alert.GetComponent<SpriteRenderer>().enabled = true;
                 StartCoroutine(FollowWithDelay());               
@@ -74,7 +74,7 @@ public class Detector : MonoBehaviour
         {
             triggerCounter--;
 
-                playerCombat.EnemiesFollowed.Remove(gameObject);
+                //playerCombat.EnemiesFollowed.Remove(gameObject);
                 StartCoroutine(StopFollowWithDelay());
         }
     } 

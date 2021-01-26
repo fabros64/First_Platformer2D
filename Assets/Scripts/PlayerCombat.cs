@@ -61,8 +61,6 @@ public class PlayerCombat : MonoBehaviour
     bool takingDamage = false;
     bool isDead = false;
 
-    public bool IsBeignFollowed { get; set; } = false;  // ? to remove
-    public List<GameObject> EnemiesFollowed { get; set; } = new List<GameObject>();  // ? to remove
 
     private void Start()
     {
