@@ -34,4 +34,14 @@ public class Game : MonoBehaviour
 
         return dmgValue;
     }
+
+    public void KeyRaised()
+    {
+        Debug.Log("You failed");
+    }
+
+    public void PlayerDead()
+    {
+        Debug.Log("You win");
+    }
 }

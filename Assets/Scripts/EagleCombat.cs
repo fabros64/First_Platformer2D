@@ -70,7 +70,7 @@ public class EagleCombat : MonoBehaviour
         OnHealthChanged += (value, additionalStr) =>
         {
             statusIndicator?.SetHealth(currentHealth, maxHealth);
-           // FloatingPoints(value, additionalStr);
+            FloatingPoints(value, additionalStr);
         };
     }
 
@@ -114,6 +114,57 @@ public class EagleCombat : MonoBehaviour
         hurtPS.Play();
         yield return new WaitForSeconds(time);
         hurtPS.transform.position = attackPoint.position;
+    }
+
+    public void TakeDamage(int damage, float recoilDirection)
+    {
+        if (currentHealth > 0)
+        {
+            StartCoroutine(RecoilWithDelay(damage, recoilDirection));
+        }
+
+        //if (statusIndicator != null)
+        //{
+        //    statusIndicator.SetHealth(currentHealth, maxHealth);
+        //}
+
+        if (currentHealth <= 0)
+        {
+            StartCoroutine(Die());
+        }
+    }
+
+    IEnumerator RecoilWithDelay(int damage, float recoilDirection)
+    {
+        if (isCoroutineRecoilExecuting)
+            yield break;
+
+        isCoroutineRecoilExecuting = true;
+        yield return new WaitForSeconds(0.2f);
+        currentHealth -= damage;
+
+        GetComponent<Rigidbody2D>().AddForce(new UnityEngine.Vector2(recoilDirection * (isDead ? 0.5f : 30), 5), ForceMode2D.Impulse);
+        isCoroutineRecoilExecuting = false;
+    }
+
+    IEnumerator Die()
+    {
+        isDead = true;      
+        this.enabled = false;
+
+        yield return new WaitForSeconds(0.3f);
+        animator.SetTrigger("Dead");
+
+        yield return new WaitForSeconds(0.3f);
+        gameObject.GetComponentInChildren<BoxCollider2D>().enabled = false;
+        gameObject.GetComponent<Eagle>().enabled = false;
+    }
+
+    private void FloatingPoints(int value, string additionalText = "")
+    {
+        GameObject points = Instantiate(floatingPoints, new UnityEngine.Vector3(transform.position.x, transform.position.y + GetComponent<BoxCollider2D>().size.y / 2), UnityEngine.Quaternion.identity, gameObject.transform);
+        points.transform.GetChild(0).GetComponent<TextMesh>().text = additionalText + value.ToString();
+        points.GetComponentInChildren<TextMesh>().color = Color.red;
     }
 
 }

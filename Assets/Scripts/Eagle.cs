@@ -29,6 +29,7 @@ public class Eagle : MonoBehaviour
 
     Quaternion ActualRotation;
 
+    public float CeilingBorder = 6f;
 
     private void Awake()
     {
@@ -57,7 +58,12 @@ public class Eagle : MonoBehaviour
     {
         FlyingDirection = Vector3.zero;
         FlyingDirection += Vector3.right * Input.GetAxisRaw("Horizontal");
-        FlyingDirection += Vector3.up * Input.GetAxisRaw("Vertical");
+        if (transform.position.y + 1 <= CeilingBorder)
+        {
+            FlyingDirection += Vector3.up * Input.GetAxisRaw("Vertical");
+        }
+        else if(Input.GetAxisRaw("Vertical") < 0)
+            FlyingDirection += Vector3.up * Input.GetAxisRaw("Vertical");
         FlyingDirection = FlyingDirection.normalized * FlyingSpeed;
         
 

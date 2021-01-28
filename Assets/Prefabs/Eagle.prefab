@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &188906647
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 188906648}
+  m_Layer: 10
+  m_Name: attackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &188906648
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188906647}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.734, y: 0.196, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 9126488982602892841}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9126488982602892883
 GameObject:
   m_ObjectHideFlags: 0
@@ -14,7 +44,9 @@ GameObject:
   - component: {fileID: 9126488982602892884}
   - component: {fileID: 9126488982602892885}
   - component: {fileID: 9126488982602892882}
-  m_Layer: 0
+  - component: {fileID: 161686587}
+  - component: {fileID: 161686588}
+  m_Layer: 10
   m_Name: Eagle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31,7 +63,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.37, y: -2.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 188906648}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -122,7 +155,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 6.25, y: 6.25}
+    oldSize: {x: 5, y: 5}
     newSize: {x: 400, y: 400}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -147,7 +180,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 6200000, guid: 39329039a18407c43aeb7b631e75bb93, type: 2}
+  m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -171,3 +204,45 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   MovementSmoothing: 0.05
+--- !u!114 &161686587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9126488982602892883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc852ba5791e31f47b435fb823b3db35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minDamage: 5
+  maxDamage: 10
+  criticalDamage: 15
+  criticalChancePercentage: 10
+--- !u!114 &161686588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9126488982602892883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 510b62bdf01809f4c9899cd3c2d9fff0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statusIndicator: {fileID: 0}
+  floatingPoints: {fileID: 6999635846298301395, guid: fbdb77638b531cc48be28f804947066e, type: 3}
+  animator: {fileID: 9126488982602892887}
+  eagle: {fileID: 9126488982602892882}
+  hurtEffectPS: {fileID: 1703001522983011835, guid: 731dcd067dd773c45b70a5c45576bc4d, type: 3}
+  bloodColor: {r: 0.5660378, g: 0.14150944, b: 0.14150944, a: 1}
+  attackPoint: {fileID: 188906648}
+  enemyLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  attackRange: 0.6
+  damageSystem: {fileID: 161686587}
+  attackRate: 0.2
+  maxHealth: 100

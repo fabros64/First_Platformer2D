@@ -49,9 +49,16 @@ public class Player : MonoBehaviour
     [SerializeField] float jumpTime;
     private bool isJumping;
 
+    public Transform jumpPoint;
+
     bool jump = false;
 
     bool isCoroutineRecoilExecuting = false;
+
+    bool isCoroutineJumpExecuting = false;
+
+    [SerializeField]
+    LayerMask obstacleLayers;
 
     private void Awake()
     {
@@ -101,26 +108,30 @@ public class Player : MonoBehaviour
         animator.SetFloat("Speed", Mathf.Abs(WalkingDirection.x));
 
         UpdateMovement();
+        Jump();
     }
 
-    void UpdateInputMovement()
+    void Jump()
     {
-        WalkingDirection = Vector3.zero;
-
-        WalkingDirection += Vector3.right * Input.GetAxisRaw("Horizontal");
-        WalkingDirection = WalkingDirection.normalized * (isInWater? WaterSpeed : WalkingSpeed);
-
-        if (Input.GetButtonDown("Jump") && Grounded)
+        Collider2D[] hitObstacles = Physics2D.OverlapCircleAll(jumpPoint.position, 0.2f, obstacleLayers);
+        if (hitObstacles.Length > 0 && Grounded)
         {
-            jump = true;
             isJumping = true;
-        }
+            jump = true;
+            //foreach (Collider2D obstacle in hitObstacles)
+            //{
+            //    if (obstacle.gameObject == gameObject && hitObstacles.Length == 1)
+            //        break;
+            //}
 
-        if (Input.GetButton("Jump") && isJumping)
+            //Rigidbody.AddForce(new Vector2(jumpForce / 4f * jumpDirection, jumpForce), ForceMode2D.Impulse);
+
+        }
+        if (isJumping)
         {
             if (jumpTimeCounter > 0)
             {
-                Rigidbody.velocity = new Vector2(Rigidbody.velocity.x, JumpForce + jumpTimeCounter*10);
+                Rigidbody.velocity = new Vector2(Rigidbody.velocity.x-3, JumpForce + jumpTimeCounter * 20);
                 jumpTimeCounter -= Time.deltaTime;
                 isJumping = true;
                 StartCoroutine(JumpSqueeze(0.7f, 1.2f, 0.1f));
@@ -131,11 +142,46 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonUp("Jump"))
+        if(hitObstacles.Length == 0)
         {
-            jump = false;
             isJumping = false;
+            jump = false;
         }
+    }
+
+    void UpdateInputMovement()
+    {
+        //WalkingDirection = Vector3.zero;
+        //WalkingDirection += Vector3.right * Input.GetAxisRaw("Horizontal");
+        WalkingDirection = Vector3.right;
+        WalkingDirection = WalkingDirection.normalized * (isInWater? WaterSpeed : WalkingSpeed);
+
+        //if (Input.GetButtonDown("Jump") && Grounded)
+        //{
+        //    jump = true;
+        //    isJumping = true;
+        //}
+
+        //if (Input.GetButton("Jump") && isJumping)
+        //{
+        //    if (jumpTimeCounter > 0)
+        //    {
+        //        Rigidbody.velocity = new Vector2(Rigidbody.velocity.x, JumpForce + jumpTimeCounter*10);
+        //        jumpTimeCounter -= Time.deltaTime;
+        //        isJumping = true;
+        //        StartCoroutine(JumpSqueeze(0.7f, 1.2f, 0.1f));
+        //    }
+        //    else
+        //    {
+        //        isJumping = false;
+        //    }
+        //}
+
+        //if (Input.GetButtonUp("Jump"))
+        //{
+        //    jump = false;
+        //    isJumping = false;
+        //}
 
         if ( WalkingDirection.x < 0)
         {

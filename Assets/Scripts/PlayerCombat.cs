@@ -61,7 +61,7 @@ public class PlayerCombat : MonoBehaviour
     bool takingDamage = false;
     bool isDead = false;
 
-
+    public bool enemyInArea { get; set; } = false;
     private void Start()
     {
         currentHealth = maxHealth;
@@ -87,7 +87,7 @@ public class PlayerCombat : MonoBehaviour
         if (Time.time >= nextAttackTime)
         {
             animator.SetBool("IsAttacking", false);
-            if (Input.GetKeyDown(KeyCode.I) && !takingDamage)
+            if (!takingDamage)
             {
                 Attack1();
                 nextAttackTime = Time.time + 1f / attackRate;
@@ -97,7 +97,7 @@ public class PlayerCombat : MonoBehaviour
         if(Time.time >= nextSpellTime)
         {
             animator.SetBool("IsCastingSpell", false);
-            if (Input.GetKeyDown(KeyCode.O) && !takingDamage)
+            if (enemyInArea && !takingDamage)
             {
                 StartCoroutine(CastSpell(0.2f));
                 nextSpellTime = Time.time + attackRate / spellRate;
@@ -112,14 +112,15 @@ public class PlayerCombat : MonoBehaviour
 
     IEnumerator CastSpell(float time)
     {
-        animator.SetTrigger("CastSpell");
-        animator.SetBool("IsCastingSpell", true);
         
         int direction = gameObject.transform.rotation.y == 0 ? 1 : (-1);
 
         float x_RelativeToPlayer = 0.49f * direction;
         float y_RelativeToPlayer = (-0.065f) * direction;
 
+        yield return new WaitForSeconds(time);
+        animator.SetTrigger("CastSpell");
+        animator.SetBool("IsCastingSpell", true);
         yield return new WaitForSeconds(time);
         var fireball = Instantiate(fireBall);
         fireball.transform.rotation = gameObject.transform.rotation;
@@ -129,18 +130,29 @@ public class PlayerCombat : MonoBehaviour
 
 
     void Attack1()
-    {
-        animator.SetTrigger("Attack1");
-        animator.SetBool("IsAttacking", true);
-
+    {       
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
-
-        foreach (Collider2D enemy in hitEnemies)
+        if (hitEnemies.Length > 0)
         {
-            hurtPS.startColor = enemy.GetComponent<Enemy>().bloodColor;
-            StartCoroutine(DamageEffect(0.15f));
-            enemy.GetComponent<Enemy>().TakeDamage(damageSystem.Damage(), 0.2f);
-            break;
+            animator.SetTrigger("Attack1");
+            animator.SetBool("IsAttacking", true);
+            foreach (Collider2D enemy in hitEnemies)
+            {
+                Eagle eagle;
+                enemy.TryGetComponent<Eagle>(out eagle);
+                if (eagle != null)
+                {
+                    hurtPS.startColor = eagle.GetComponent<EagleCombat>().bloodColor;
+                    eagle.GetComponent<EagleCombat>().TakeDamage(damageSystem.Damage(), gameObject.transform.rotation.y == 0 ? 1 : (-1));
+                }
+                else
+                {
+                    hurtPS.startColor = enemy.GetComponent<Enemy>().bloodColor;                    
+                    enemy.GetComponent<Enemy>().TakeDamage(damageSystem.Damage(), 0.2f);
+                }
+                StartCoroutine(DamageEffect(0.15f));
+                break;
+            }
         }
     }
 
@@ -196,6 +208,8 @@ public class PlayerCombat : MonoBehaviour
         animator.SetTrigger("Dead");
         yield return new WaitForSeconds(0.4f);
         GetComponent<Rigidbody2D>().simulated = false;
+
+        Game.game.PlayerDead();
     }
 
     void OnDrawGizmosSelected()
@@ -205,4 +219,5 @@ public class PlayerCombat : MonoBehaviour
 
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
+    
 }
