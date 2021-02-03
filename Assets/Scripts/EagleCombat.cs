@@ -154,10 +154,10 @@ public class EagleCombat : MonoBehaviour
 
         yield return new WaitForSeconds(0.3f);
         animator.SetTrigger("Dead");
-
+        gameObject.GetComponent<Eagle>().enabled = false;
         yield return new WaitForSeconds(0.3f);
         gameObject.GetComponentInChildren<BoxCollider2D>().enabled = false;
-        gameObject.GetComponent<Eagle>().enabled = false;
+
     }
 
     private void FloatingPoints(int value, string additionalText = "")
